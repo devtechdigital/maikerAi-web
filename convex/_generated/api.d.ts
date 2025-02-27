@@ -13,6 +13,8 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as blog from "../blog.js";
+import type * as blog_seed from "../blog_seed.js";
 import type * as http from "../http.js";
 import type * as images from "../images.js";
 import type * as plans from "../plans.js";
@@ -29,6 +31,8 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  blog: typeof blog;
+  blog_seed: typeof blog_seed;
   http: typeof http;
   images: typeof images;
   plans: typeof plans;

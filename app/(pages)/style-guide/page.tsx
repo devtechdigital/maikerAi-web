@@ -60,10 +60,27 @@ export default function StyleGuidePage() {
   return (
     <PageWrapper>
       {/* Header */}
-      <section className="pt-32 pb-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Maiker.Ai Style Guide</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+      <section className="relative pt-32 pb-20 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          {images && images.find(img => img.name === "StyleGdHeader.png")?.url ? (
+            <>
+              <Image
+                src={images.find(img => img.name === "StyleGdHeader.png")!.url!}
+                alt="Style Guide Header"
+                fill
+                unoptimized
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-black/50" />
+            </>
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-green-800 to-blue-900" />
+          )}
+        </div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <h1 className="text-4xl font-bold mb-4 text-white">Maiker.Ai Style Guide</h1>
+          <p className="text-lg text-gray-200 mb-8">
             A comprehensive guide to Maiker.Ai's design system and components.
           </p>
         </div>
@@ -83,7 +100,7 @@ export default function StyleGuidePage() {
                   <p className={`text-2xl ${GeistSans.className}`}>Geist Sans</p>
                   <p className="text-sm text-gray-500 mt-2">Modern, clean, and highly legible sans-serif font</p>
                   <div className="mt-4 space-y-2">
-                    <p className={`${GeistSans.className} font-normal`}>Regular - The quick brown fox jumps over the lazy dog</p>
+                    <p className={`${GeistSans.className} font-light`}>Light - The quick brown fox jumps over the lazy dog</p>
                     <p className={`${GeistSans.className} font-medium`}>Medium - The quick brown fox jumps over the lazy dog</p>
                     <p className={`${GeistSans.className} font-semibold`}>Semibold - The quick brown fox jumps over the lazy dog</p>
                     <p className={`${GeistSans.className} font-bold`}>Bold - The quick brown fox jumps over the lazy dog</p>
@@ -101,7 +118,7 @@ export default function StyleGuidePage() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 mb-1">Body Text</p>
-                  <p className="font-normal">Font: Geist Sans Regular</p>
+                  <p className="font-light">Font: Geist Sans Light</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 mb-1">UI Elements</p>
@@ -278,39 +295,41 @@ export default function StyleGuidePage() {
                   </div>
                 ) : images && images.length > 0 ? (
                   images.map((image) => (
-                    image?.url ? (
-                      <div key={image._id} className="group relative">
-                        <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+                    <div key={image.storageId} className="group relative">
+                      <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+                        {image.url && (
                           <Image
                             src={image.url}
                             alt={image.name}
                             fill
+                            unoptimized
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            priority={true}
                           />
-                          {/* Overlay with image name */}
-                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
-                            <p className="text-white text-sm font-medium text-center break-all">
-                              {image.name}
-                            </p>
-                            <button
-                              onClick={async () => {
-                                try {
-                                  await deleteImage({ imageId: image._id });
-                                  toast.success('Image deleted successfully');
-                                } catch (error) {
-                                  console.error('Failed to delete image:', error);
-                                  toast.error('Failed to delete image');
-                                }
-                              }}
-                              className="mt-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm font-medium"
-                            >
-                              Delete
-                            </button>
-                          </div>
+                        )}
+                        {/* Overlay with image name */}
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
+                          <p className="text-white text-sm font-medium text-center break-all">
+                            {image.name}
+                          </p>
+                          <button
+                            onClick={async () => {
+                              try {
+                                await deleteImage({ imageId: image._id });
+                                toast.success('Image deleted successfully');
+                              } catch (error) {
+                                console.error('Failed to delete image:', error);
+                                toast.error('Failed to delete image');
+                              }
+                            }}
+                            className="mt-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm font-medium"
+                          >
+                            Delete
+                          </button>
                         </div>
                       </div>
-                    ) : null
+                    </div>
                   ))
                 ) : (
                   <div className="col-span-3 p-8 text-center border-2 border-dashed rounded-lg">

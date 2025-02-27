@@ -24,6 +24,16 @@ const intervalPricesValidator = v.object({
     usd: priceValidator,
 });
 
+// Blog post status options
+export const BLOG_POST_STATUS = {
+    DRAFT: "draft",
+    PUBLISHED: "published",
+} as const;
+
+export const blogPostStatusValidator = v.union(
+    v.literal(BLOG_POST_STATUS.DRAFT),
+    v.literal(BLOG_POST_STATUS.PUBLISHED),
+);
 
 export default defineSchema({
     users: defineTable({
@@ -103,4 +113,32 @@ export default defineSchema({
         createdAt: v.string(),
         status: v.string(),
     }),
+    blogCategories: defineTable({
+        name: v.string(),
+        slug: v.string(),
+        description: v.optional(v.string()),
+        order: v.number(),
+        createdAt: v.number(),
+        updatedAt: v.number(),
+    }).index("by_slug", ["slug"]),
+    blogPosts: defineTable({
+        title: v.string(),
+        slug: v.string(),
+        content: v.string(), // Rich text content stored as JSON string
+        categoryId: v.id("blogCategories"),
+        authorId: v.string(), // User ID of the author
+        authorName: v.string(), // Denormalized author name
+        featuredImage: v.optional(v.string()), // Storage ID for the image
+        metaDescription: v.optional(v.string()),
+        status: blogPostStatusValidator,
+        publishedAt: v.optional(v.number()),
+        createdAt: v.number(),
+        updatedAt: v.number(),
+        tags: v.array(v.string()),
+        readingTimeMinutes: v.number(),
+    })
+        .index("by_slug", ["slug"])
+        .index("by_category", ["categoryId"])
+        .index("by_status", ["status"])
+        .index("by_status_and_date", ["status", "publishedAt"]),
 })

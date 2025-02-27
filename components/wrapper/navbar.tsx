@@ -36,6 +36,11 @@ const navLinks: { title: string; href: string; description: string }[] = [
     description: "Learn about our process and platform.",
   },
   {
+    title: "Blog",
+    href: "/blog",
+    description: "Insights and guides on AI development and technology.",
+  },
+  {
     title: "About Us",
     href: "/about-us",
     description: "Our mission, story, and values.",
@@ -184,6 +189,9 @@ export default function NavBar() {
 
           <Link href="/how-it-works" prefetch={true}>
             <Button variant="ghost">How It Works</Button>
+          </Link>
+          <Link href="/blog" prefetch={true}>
+            <Button variant="ghost">Blog</Button>
           </Link>
           <Link href="/about-us" prefetch={true}>
             <Button variant="ghost">About Us</Button>

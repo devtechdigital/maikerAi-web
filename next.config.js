@@ -9,10 +9,12 @@ const nextConfig = {
     }
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*.convex.cloud'
+        hostname: '**.convex.cloud',
+        pathname: '/**'
       }
     ]
   },

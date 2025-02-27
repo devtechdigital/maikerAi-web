@@ -19,7 +19,8 @@ import {
     LogOut,
     Settings,
     Sparkles,
-    User
+    User,
+    Palette
 } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -55,6 +56,12 @@ export function UserProfile() {
                         <DropdownMenuItem className="focus:bg-blue-50 dark:focus:bg-blue-950">
                             <User className="mr-2 h-4 w-4" />
                             <span>Profile</span>
+                        </DropdownMenuItem>
+                    </Link>
+                    <Link href="/style-guide">
+                        <DropdownMenuItem className="focus:bg-blue-50 dark:focus:bg-blue-950">
+                            <Palette className="mr-2 h-4 w-4" />
+                            <span>Style Guide</span>
                         </DropdownMenuItem>
                     </Link>
                     <Link href="/dashboard/settings">

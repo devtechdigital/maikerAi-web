@@ -39,9 +39,6 @@ export const saveImage = mutation({
       throw new ConvexError("You must be logged in to save images");
     }
 
-    // Generate a URL for the uploaded image
-    const url = await ctx.storage.getUrl(args.storageId);
-
     const image = {
       storageId: args.storageId,
       name: args.name,
@@ -50,7 +47,6 @@ export const saveImage = mutation({
       description: args.description,
       uploadedBy: identity.subject,
       uploadedAt: Date.now(),
-      url: url || undefined,
     };
 
     return await ctx.db.insert("images", image);
@@ -73,7 +69,16 @@ export const listImages = query({
       .query("images")
       .order("desc")
       .collect();
-    return images;
+    
+    // Generate fresh URLs for each image
+    const imagesWithUrls = await Promise.all(
+      images.map(async (image) => ({
+        ...image,
+        url: await ctx.storage.getUrl(image.storageId)
+      }))
+    );
+    
+    return imagesWithUrls;
   },
 });
 

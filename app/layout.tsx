@@ -1,4 +1,5 @@
 import Provider from "@/app/provider";
+import PageTransition from "@/app/components/PageTransition";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -45,7 +46,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={GeistSans.className}>
+      <body className={`${GeistSans.className} font-light`}>
         <ClerkProvider
           publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
           appearance={{
@@ -64,7 +65,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Provider>
-              {children}
+              <PageTransition>{children}</PageTransition>
               <Toaster />
             </Provider>
           </ThemeProvider>
